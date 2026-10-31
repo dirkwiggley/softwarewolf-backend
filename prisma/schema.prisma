@@ -1,0 +1,60 @@
+datasource db {
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+// 1. Define strict clearance levels
+enum Role {
+  ADMIN
+  MANAGER
+  USER
+}
+
+// 2. User Table tracking permissions
+model User {
+  id          String     @id @default(uuid())
+  username    String     @unique
+  displayName String
+  email       String     @unique
+  password    String     @default("")
+  role        Role       @default(USER)
+  createdAt   DateTime   @default(now())
+  activities  Activity[]
+}
+
+// 3. Activity Table linked to users
+model Activity {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// 4. WidgetControl Table for UI text blocks
+model WidgetControl {
+  id          String   @id @default(uuid())
+  controlKey  String   @unique
+  heading     String
+  bodyText    String   @db.Text
+  updatedAt   DateTime @updatedAt
+}
+
+// 5. NewsArticle Table for Campaign Chronicles & Timeline Events
+model NewsArticle {
+  id               String   @id @default(uuid())
+  title            String
+  author           String
+  sections         Json     // Storing repeatable paragraphs array
+  button           Json?    // Optional interactive action routing path
+  sortOrder        Int      @default(0)
+  insertBreakAfter Boolean  @default(false) // The dynamic <hr /> controller
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("news_articles")
+}

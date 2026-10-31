@@ -1,41 +1,24 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Node dependencies
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Next.js build outputs
+.next/
+out/
 
-# testing
-/coverage
+# Prisma local generated client & SQLite if used
+src/generated/
+*.db
+*.db-journal
 
-# next.js
-/.next/
-/out/
+# Local Environment Variables (Never commit these!)
+.env
+.env.local
+.env.production
+.env.development
 
-# production
-/build
+# Deployment packaging artifacts
+deploy.zip
+zip-deploy.py
 
-# misc
+# System file garbage
 .DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
